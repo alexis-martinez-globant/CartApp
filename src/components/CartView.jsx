@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
 import { totalCalc } from "../services/productService";
+import { useNavigate } from "react-router-dom";
 
-export const CartView = ({ items, handlerDelete, handlerDel1 }) => {
+// export const CartView = ({ items, handlerDelete, handlerDel1 }) => {
+export const CartView = ({ items, handlerDelete }) => {
   const [total, setTotal] = useState(0);
   useEffect(() => {
     setTotal(totalCalc(items));
-    sessionStorage.setItem("cart", JSON.stringify(items));
+    // sessionStorage.setItem("cart", JSON.stringify(items));
   }, [items]);
 
   const onDelete = (id) => {
-    // console.log(id);
     handlerDelete(id);
   };
 
   const onDel1 = (product) => {
     // console.log(product);
     handlerDel1(product);
+  };
+
+  const navigate = useNavigate();
+  const GoToCatalog = () => {
+    navigate("/catalog");
   };
   return (
     <>
@@ -38,12 +44,12 @@ export const CartView = ({ items, handlerDelete, handlerDel1 }) => {
               <td>{item.quantity}</td>
               <td>{item.product.price * item.quantity}</td>
               <td>
-                <button
+                {/* <button
                   onClick={() => onDel1(item.product)}
                   className="btn btn-sm btn-warning mx-1"
                 >
                   -1
-                </button>
+                </button> */}
                 <button
                   onClick={() => onDelete(item.product.id)}
                   className="btn btn-sm btn-danger"
@@ -65,6 +71,10 @@ export const CartView = ({ items, handlerDelete, handlerDel1 }) => {
           </tr>
         </tfoot>
       </table>
+
+      <button className="btn btn-success" onClick={GoToCatalog}>
+        Go back to shop
+      </button>
     </>
   );
 };
